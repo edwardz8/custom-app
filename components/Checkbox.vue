@@ -23,6 +23,6 @@ export default {
 
 <template>
     <div>
-        <label>
+        <label></label>
     </div>
 </template>

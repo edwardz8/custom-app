@@ -2,7 +2,11 @@ require('dotenv').config()
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  ssr: false,
+  mode: 'universal',
+  // Target: https://go.nuxtjs.dev/config-target
+  target: 'server',
+  // target: 'static',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -27,6 +31,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/components',
+    '~/plugins/composition-api.js',
+    '~/plugins/storyblok-rich-text-renderer.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -40,6 +47,10 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    ['storyblok-nuxt', {
+      accessToken: 'QzOE47DZXNfrSwYzeFNCqwtt',
+      cacheProvider: 'memory'
+    }],
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/dotenv',
     '@nuxtjs/axios',
