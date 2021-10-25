@@ -8,12 +8,12 @@
       <p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">
         {{ column.title }}
       </p>
-      <story-card
+      <!-- <story-card
         v-for="story in column.stories"
         :key="story.id"
         :story="story"
         class="mt-3"
-      />
+      /> -->
       <!-- articles -->
       <component
         v-if="story.content.component"
@@ -42,10 +42,6 @@ export default {
       columns: [
         {
           title: "Unpublished",
-          stories: [],
-        },
-        {
-          title: "Unpublished Content",
           stories: [],
         },
         {
