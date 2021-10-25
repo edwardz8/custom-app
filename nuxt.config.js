@@ -49,7 +49,7 @@ export default {
       {
         id: process.env.CONFIDENTIAL_CLIENT_ID,
         secret: process.env.CONFIDENTIAL_CLIENT_SECRET,
-        redirect_url: process.env.CONFIDENTIAL_CLIENT_REDIRECT_URI
+        redirect_uri: process.env.CONFIDENTIAL_CLIENT_REDIRECT_URI
       }
     ]
   ],
