@@ -15,6 +15,8 @@ export default {
     class="prose my-24 mx-auto">
     <h1>{{ blok.name }}</h1>
     <p>{{ blok.intro }}</p>
+    <p>{{ blok.seo.title }}</p>
+    <p>{{ blok.seo.description }}</p>
     <rich-text-renderer
       :document="blok.body"
     />

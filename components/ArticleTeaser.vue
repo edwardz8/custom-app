@@ -9,6 +9,12 @@ export default {
       type: String,
       required: true,
     },
+    articleMetaTitle: {
+      type: Object
+    },
+    articleMetaDescription: {
+      type: Object
+    },
   },
 };
 </script>
@@ -23,6 +29,12 @@ export default {
     </h2>
     <p class="pb-6 leading-relaxed">
       {{ articleContent.intro }}
+    </p>
+    <p class="pb-6 leading-relaxed">
+      {{ articleContent.seo.title }}
+    </p>
+    <p class="pb-6 leading-relaxed">
+      {{ articleContent.seo.description }}
     </p>
   </nuxt-link>
 </template>
