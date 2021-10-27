@@ -1,69 +1,137 @@
 <template>
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
-      <!-- <SbLoading type="spinner" size="x-large" color="primary" /> -->
-      <SbPagination v-model="page" :per-page="perPage" :total="total" :carousel="true" />
+      <!-- PAGINATION -->
+      <!-- <SbPagination v-model="page" :per-page="per_page" :total="total" :carousel="true" /> -->
+      <div
+        class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
+      >
+        <div class="flex-1 flex justify-between sm:hidden">
+          <a
+            href="#"
+            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            Previous
+          </a>
+          <a
+            href="#"
+            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            Next
+          </a>
+        </div>
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <nav
+              class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+              aria-label="Pagination"
+            >
+              <a
+                href="#"
+                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              >
+                <span class="sr-only">Previous</span>
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              >
+                <span class="sr-only">Next</span>
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="flex justify-center">
-      <div
+      <!-- <div
         v-for="column in columns"
         :key="column.title"
         class="w-full bg-gray-100 rounded-lg px-3 py-3 column-width rounded mr-4"
       >
         <p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">
           {{ column.title }}
-        </p>
-        <!-- <story-card
-        v-for="story in column.stories"
+        </p> -->
+      <!-- <story-card
+        v-for="(story) in column.articles"
         :key="story.id"
         :story="story"
         class="mt-3"
       /> -->
-        <!-- articles -->
-          <component
-            v-if="story.content.component"
-            :key="story.content._uid"
-            :blok="story.content"
-            :is="story.content.component"
-          />
-      </div>
+      <featured-articles
+        v-if="story.content.component"
+        :key="story.content_uid"
+        :blok="story.content"
+        :is="story.content.component"
+      />
     </div>
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import StoryCard from "~/components/StoryCard.vue";
+import FeaturedArticles from "~/components/FeaturedArticles.vue";
 
 export default {
+  components: {
+    StoryCard,
+    FeaturedArticles,
+  },
   data() {
     return {
-      page: 1,
-      perPage: 5,
-      total: 0,
-      story: {
-        content: {},
-      },
+      story: {},
       stories: [],
-      columns: [
+      page: 1,
+      per_page: 5,
+      total: 0,
+      /* columns: [
         {
           title: "Unpublished",
-          stories: [],
+          articles: [],
         },
         {
           title: "Published",
-          stories: [],
+          articles: [],
         },
-      ],
+      ], */
     };
   },
-  computed: {
+  /* computed: {
     selectedStories() {
       return this.$store.state.stories;
     },
     availablePages() {
-      return Math.ceil(this.total / this.perPage);
+      return Math.ceil(this.total / this.per_page);
     },
-  },
+  }, */
   mounted() {
     if (window.top == window.self) {
       // https://app.storyblok.com/oauth/authorize?client_id=eEzS%2FO9kvztN0GVE2pqtJQ%3D%3D&response_type=code&redirect_uri=https%3A%2F%2F558f-69-1-48-73.ngrok.io%2Fauth%2Fcallback&scope=read_content%20write_content&state=23be4f7f-4aab-471f-bee3-b9babc8fcd66&code_chalenge=ef69169efa011941301bdbb23b65f1c7a8b12756307e26da4b08fbec0bf628b1&code_chalenge_method=S256
@@ -108,38 +176,17 @@ export default {
       });
   },
   methods: {
-    async loadStories() {
-      // pagination - https://api.storyblok.com/v1/spaces/(:space_id)/stories/?per_page=2&page=1
-      // get unpublished changes boolean property
-      let stories = [];
-
-      // Get the first page
-      let first_page = await axios.get(
-        `/auth/spaces/${this.$route.query.space_id}/stories?contain_component=Courses%20Module&with_summary=1&per_page=${this.per_page}&sort_by=name:asc`
-      );
-      let pages_requests = [];
-      stories = stories.concat(first_page.data.stories);
-
-      // Eventually Getting Other Pages
-      if (first_page.data.total > 1) {
-        let total_pages = Math.ceil(first_page.data.total / this.per_page);
-
-        for (var i = 2; i <= total_pages; i++) {
-          pages_requests.push(
-            axios.get(
-              `/auth/spaces/${this.$route.query.space_id}/stories?with_summar=1&per_page=${this.per_page}&page=${i}&sort_by=name:asc`
-            )
-          );
-        }
-
-        let pages_requests_data = await Promise.all(pages_requests);
-        pages_requests_data.forEach((req) => {
-          stories = stories.concat(req.data.stories);
-        });
-      }
-
-      /* axios
-        .get(`/auth/explore/spaces/${this.$route.query.space_id}/stories`)
+    loadStories() {
+      // get the space id from URL and use it in requests
+      /* return await axios
+        .get(`/auth/spaces/${this.spaceId}/stories`)
+        .then((res) => {
+          this.per_page = res.data.per_page
+          this.total = res.data.total
+          this.stories = res.data.stories
+        }) */
+      axios
+        .get(`/auth/spaces/${this.$route.query.space_id}/stories`)
         .then((res) => {
           this.stories = res.data.stories;
 
@@ -158,15 +205,8 @@ export default {
               this.columns[2].stories.push(compStory);
             }
           }
-        }); */
-    },
-    /* loadStory() {
-      axios
-        .get(`/auth/explore/spaces/${this.$route.query.space.id}/stories/79698930`)
-        .then((res) => {
-          this.story = res.data.story;
         });
-    }, */
+    },
   },
 };
 </script>

@@ -1,11 +1,14 @@
 <script>
+import axios from "axios";
+
 export default {
   props: {
     blok: {
       type: Object,
       required: true,
-    },
+    }
   },
+
   computed: {
     sortedArticles() {
       const featuredArticles = this.$store.state.articles.filter((article) => {
@@ -41,9 +44,6 @@ export default {
           :article-link="article.full_slug"
           :article-content="article.content"
         />
-        <p v-else class="px-4 py-2 text-white bg-red-800 text-center rounded">
-          This content loads on save.<strong>Save the entry and reload.</strong>
-        </p>
       </li>
     </ul>
   </div>
