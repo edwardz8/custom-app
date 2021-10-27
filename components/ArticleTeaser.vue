@@ -10,10 +10,10 @@ export default {
       required: true,
     },
     articleMetaTitle: {
-      type: Object
+      type: String
     },
     articleMetaDescription: {
-      type: Object
+      type: String
     },
   },
 };
