@@ -15,48 +15,7 @@ export default {
     articleMetaDescription: {
       type: String,
     },
-  },
-
-  /* mounted() {
-    if (this.data)
-      if (!this.data.content.body) {
-        this.data.content.body = [];
-      }
-    this.story = this.data;
-  }, */
-
-  /* methods: {
-    async saveData(publish) {
-      if (publish) {
-        this.open = false;
-      }
-
-      let storyData = {
-        story: {
-          content: this.story.content,
-        },
-      };
-
-      if (storyData.story.content.variants) {
-        for (const variant of storyData.story.content.variants) {
-          delete variant._uid;
-        }
-        console.log(this.story, storyData);
-      }
-
-      if (publish) {
-        storyData.publish = 1;
-        this.story.unpublished_changes = false;
-      } else {
-        this.story.unpublished_changes = true;
-      }
-
-      return axios.put(
-        `/auth/spaces/${this.$route.query.space_id}/stories/${this.story.id}`,
-        storyData
-      );
-    },
-  }, */
+  }
 };
 </script>
 
