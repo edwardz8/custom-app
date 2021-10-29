@@ -16,24 +16,11 @@ export default {
     };
   },
 
-  mounted() {
-    if (this.data)
-      if (!this.data.content.body) {
-        this.data.content.body = [];
-      }
-    /* if (this.data.content.body.length === 0) {
-      this.data.content.body.push({ component: "[Template] Story Detail", intro: [] });
-    }
-    if (
-      !this.data.content.body[0].intro ||
-      this.data.content.body[0].intro.length === 0
-    ) {
-      this.data.content.body[0].intro = [{ component: "[Block] Stories Detail - Intro" }];
-    } */
-    this.story = this.data;
-  },
 
   computed: {
+    filteredStories: function() {
+      return this.storiesWithData.filter(s => !this.keyword || s.name.toLowerCase().includes(this.keyword.toLowerCase()));
+    },
     sortedArticles() {
       const featuredArticles = this.$store.state.articles.filter((article) => {
         return this.blok.articles.includes(article.uuid);
@@ -43,6 +30,14 @@ export default {
       });
       return featuredArticles;
     },
+  },
+
+  mounted() {
+    if (this.data)
+      if (!this.data.content.body) {
+        this.data.content.body = [];
+      }
+    this.story = this.data;
   },
 
   methods: {
@@ -57,7 +52,7 @@ export default {
 
       let storyData = {
         story: {
-          content: this.story.content,
+          content: this.story,
         },
       };
 
@@ -80,10 +75,6 @@ export default {
         storyData
       );
     },
-
-    openStory: function (event) {
-      event.target.closest(".story").classList.toggle("visible");
-    },
   },
 
   props: ["data"],
@@ -91,50 +82,33 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div>
-    <!-- <div v-editable="blok"> -->
-      <!-- <h2 class="pt-2 pl-6 text-lg text-gray-700 italic">{{ blok.title }}</h2>
-      <p class="pt-2 pl-6">
-        {{ blok.meta_description.title }} :
-        <span>{{ blok.meta_description.description }}</span>
-      </p> -->
-      <ul class="flex flex-col py-6 mb-6">
-        <li
-          v-for="article in filteredStories"
-          :key="article._uid"
-          class="flex-auto px-6"
-          style="min-width: 33%"
-        >
-          <article-teaser
-            v-if="article.content"
-            :article-meta-title="article.content.seo.title"
-            :article-meta-description="article.content.seo.description"
-            :article-link="article.full_slug"
-            :article-content="article.content"
-          />
-        </li>
-      </ul>
-    </div>
+  <div class="container mx-auto">
     <div
       :key="story.id"
       v-if="story"
+      class="py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
     >
-      <h3>{{ story }}</h3>
-      <div class="course__tools">
+      <div>
+        <h4 class="text-gray-800 text-3xl font-semibold">{{ story.name }}</h4>
+        <!-- <p class="mt-2 text-gray-600">{{ story.content.intro }}</p>
+        <p class="mt-2 text-gray-600">{{ story.content.seo.description }}</p>
+        <p class="mt-2 text-gray-600">{{ story.content.seo.title }}</p> -->
+
+      </div>
+      <div class="flex justify-end mt-4">
         <button
-          class="button course__button course__button--open"
-          v-on:click="open = true"
+          class="mx-2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          @click="saveData()"
         >
-          <span>Expand</span>
+          Save Draft
         </button>
         <button
-          class="button course__button course__button--close"
-          v-on:click="open = false"
+          class="mx-2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          @click="saveData(true)"
         >
-          <span>Close</span>
+          Publish
         </button>
       </div>
-    </div>
+      </div>
   </div>
 </template>

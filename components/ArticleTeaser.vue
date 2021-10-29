@@ -38,17 +38,6 @@ export default {
         {{ articleContent.seo.description }}
       </p>
     </nuxt-link>
-    <div class="buttons">
-      <button class="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r" @click="saveData()">
-        Save Draft
-      </button>
-      <button
-         class="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r"
-        @click="saveData(true)"
-      >
-        Publish
-      </button>
-    </div>
   </div>
 </template>
 

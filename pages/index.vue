@@ -70,17 +70,17 @@
       </div>
     </div>
     <div class="container">
-      <div class="stories flex justify-center">
+      <div class="stories flex flex-col justify-center">
         <story-card v-for="story in filteredStories" v-bind:key="story.uuid" v-bind:data="story" />
         <!-- <Course v-for="story in filteredStories" v-bind:key="story.id" v-bind:data="story" /> -->
       </div>
     </div>
     <!-- <div class="flex justify-center">
       <featured-articles
-        v-if="story.content.component"
-        :key="story.content_uid"
+        v-if="story"
+        :key="story.uuid"
         :blok="story.content"
-        :is="story.content.body.component"
+        :is="story.content"
       />
     </div> -->
     <!-- </div> -->
@@ -177,11 +177,11 @@ export default {
             )
             .then((response) => {
               if (response.data.story) {
-                if (!response.data.story.content.seo_metatags) {
-                  response.data.story.content.seo_metatags = {
+                if (!response.data.story.content.seo) {
+                  response.data.story.content.seo = {
                     title: "",
                     description: "",
-                    plugin: "seo_metatags",
+                    plugin: "meta-fields",
                   };
                 }
                 this.storiesWithData.push(
