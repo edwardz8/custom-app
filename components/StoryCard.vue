@@ -16,18 +16,6 @@ export default {
     };
   },
 
- /*  computed: {
-    sortedArticles() {
-      const featuredArticles = this.$store.state.articles.filter((article) => {
-        return this.blok.articles.includes(article.uuid);
-      });
-      featuredArticles.sort((a, b) => {
-        return this.blok.articles.indexOf(a.uuid) - this.blok.articles.indexOf(b.uuid);
-      });
-      return featuredArticles;
-    },
-  }, */
-
   mounted() {
     if (this.data)
       if (!this.data.content.body) {
@@ -44,6 +32,18 @@ export default {
     }
     this.story = this.data;
   },
+
+  /* computed: {
+    sortedArticles() {
+      const featuredArticles = this.$store.state.articles.filter((article) => {
+        return this.blok.articles.includes(article.uuid);
+      });
+      featuredArticles.sort((a, b) => {
+        return this.blok.articles.indexOf(a.uuid) - this.blok.articles.indexOf(b.uuid);
+      });
+      return featuredArticles;
+    },
+  }, */
 
   methods: {
     showTab(name) {
@@ -116,17 +116,10 @@ export default {
       </ul>
     </div>
     <div
-      v-bind:class="[
-        'course',
-        open ? 'course--open' : '',
-        story.published && !story.unpublished_changes
-          ? 'course--published'
-          : 'course--draft',
-      ]"
       :key="story.id"
       v-if="story.content"
     >
-      <h3>{{ story.content }}</h3>
+      <h3>{{ story.content.body.content }}</h3>
       <div class="course__tools">
         <button
           class="button course__button course__button--open"

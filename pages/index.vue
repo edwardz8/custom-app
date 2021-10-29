@@ -71,7 +71,7 @@
     </div>
     <div class="container">
       <div class="stories flex justify-center">
-        <story-card v-for="story in sortedArticles" v-bind:key="story._uid" v-bind:data="story" />
+        <story-card v-if="story.content.body" :blok="story.content.body.component" v-bind:key="story.uuid" v-bind:data="story" />
       </div>
     </div>
     <!-- <div class="flex justify-center">
@@ -79,7 +79,7 @@
         v-if="story.content.component"
         :key="story.content_uid"
         :blok="story.content"
-        :is="story.content.component"
+        :is="story.content.body.component"
       />
     </div> -->
     <!-- </div> -->
