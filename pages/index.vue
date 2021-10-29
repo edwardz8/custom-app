@@ -71,7 +71,8 @@
     </div>
     <div class="container">
       <div class="stories flex justify-center">
-        <story-card v-if="story.content.body" :blok="story.content.body.component" v-bind:key="story.uuid" v-bind:data="story" />
+        <story-card v-for="story in filteredStories" v-bind:key="story.uuid" v-bind:data="story" />
+        <!-- <Course v-for="story in filteredStories" v-bind:key="story.id" v-bind:data="story" /> -->
       </div>
     </div>
     <!-- <div class="flex justify-center">

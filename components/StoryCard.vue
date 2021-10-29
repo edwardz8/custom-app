@@ -21,7 +21,7 @@ export default {
       if (!this.data.content.body) {
         this.data.content.body = [];
       }
-    if (this.data.content.body.length === 0) {
+    /* if (this.data.content.body.length === 0) {
       this.data.content.body.push({ component: "[Template] Story Detail", intro: [] });
     }
     if (
@@ -29,11 +29,11 @@ export default {
       this.data.content.body[0].intro.length === 0
     ) {
       this.data.content.body[0].intro = [{ component: "[Block] Stories Detail - Intro" }];
-    }
+    } */
     this.story = this.data;
   },
 
-  /* computed: {
+  computed: {
     sortedArticles() {
       const featuredArticles = this.$store.state.articles.filter((article) => {
         return this.blok.articles.includes(article.uuid);
@@ -43,7 +43,7 @@ export default {
       });
       return featuredArticles;
     },
-  }, */
+  },
 
   methods: {
     showTab(name) {
@@ -92,15 +92,16 @@ export default {
 
 <template>
   <div>
-    <div v-editable="blok">
-      <h2 class="pt-2 pl-6 text-lg text-gray-700 italic">{{ blok.title }}</h2>
+    <div>
+    <!-- <div v-editable="blok"> -->
+      <!-- <h2 class="pt-2 pl-6 text-lg text-gray-700 italic">{{ blok.title }}</h2>
       <p class="pt-2 pl-6">
         {{ blok.meta_description.title }} :
         <span>{{ blok.meta_description.description }}</span>
-      </p>
+      </p> -->
       <ul class="flex flex-col py-6 mb-6">
         <li
-          v-for="article in sortedArticles"
+          v-for="article in filteredStories"
           :key="article._uid"
           class="flex-auto px-6"
           style="min-width: 33%"
@@ -117,9 +118,9 @@ export default {
     </div>
     <div
       :key="story.id"
-      v-if="story.content"
+      v-if="story"
     >
-      <h3>{{ story.content.body.content }}</h3>
+      <h3>{{ story }}</h3>
       <div class="course__tools">
         <button
           class="button course__button course__button--open"
