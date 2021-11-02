@@ -8,6 +8,8 @@ export default {
     },
   },
 
+  props: ["data"],
+
   data() {
     return {
       open: false,
@@ -16,20 +18,10 @@ export default {
     };
   },
 
-
   computed: {
     filteredStories: function() {
       return this.storiesWithData.filter(s => !this.keyword || s.name.toLowerCase().includes(this.keyword.toLowerCase()));
-    },
-    sortedArticles() {
-      const featuredArticles = this.$store.state.articles.filter((article) => {
-        return this.blok.articles.includes(article.uuid);
-      });
-      featuredArticles.sort((a, b) => {
-        return this.blok.articles.indexOf(a.uuid) - this.blok.articles.indexOf(b.uuid);
-      });
-      return featuredArticles;
-    },
+    }
   },
 
   mounted() {
@@ -52,13 +44,13 @@ export default {
 
       let storyData = {
         story: {
-          content: this.story,
+          content: this.story.content,
         },
       };
 
-      if (storyData.story.content.articles) {
-        for (const story of storyData.story.content.articles) {
-          delete story._uid;
+      if (storyData.story.content) {
+        for (const story of storyData.story.content) {
+          delete story.uuid;
         }
         console.log(this.story, storyData);
       }
@@ -76,8 +68,6 @@ export default {
       );
     },
   },
-
-  props: ["data"],
 };
 </script>
 
@@ -85,15 +75,16 @@ export default {
   <div class="container mx-auto">
     <div
       :key="story.id"
-      v-if="story"
+      v-if="story && story.content"
       class="py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
     >
       <div>
         <h4 class="text-gray-800 text-3xl font-semibold">{{ story.name }}</h4>
-        <!-- <p class="mt-2 text-gray-600">{{ story.content.intro }}</p>
-        <p class="mt-2 text-gray-600">{{ story.content.seo.description }}</p>
-        <p class="mt-2 text-gray-600">{{ story.content.seo.title }}</p> -->
-
+        <p class="mt-2 text-gray-200 text-xl">{{ story.content.intro }}</p>
+        <p class="mt-2 text-gray-200 text-xl">{{ story.content.seo.description }}</p>
+        <p class="mt-2 text-gray-200 text-xl">{{ story.content.seo.title }}</p>
+        <p class="mt-4 text-red-200 font-bold text-xl">Published: {{ story.published }}</p>
+        <p class="mt-2 text-green-200 font-bold text-xl">Draft: {{ story.unpublished_changes }}</p>
       </div>
       <div class="flex justify-end mt-4">
         <button
