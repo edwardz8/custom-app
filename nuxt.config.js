@@ -34,7 +34,7 @@ export default {
     '~/plugins/components',
     '~/plugins/composition-api.js',
     '~/plugins/storyblok-rich-text-renderer.js',
-    { src: '~/plugins/blok-ink.js', ssr: false }
+    '~/plugins/blok-ink.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
