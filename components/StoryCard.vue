@@ -13,15 +13,8 @@ export default {
   data() {
     return {
       open: false,
-      currentTab: "overview",
       story: {},
     };
-  },
-
-  computed: {
-    filteredStories: function() {
-      return this.storiesWithData.filter(s => !this.keyword || s.name.toLowerCase().includes(this.keyword.toLowerCase()));
-    }
   },
 
   mounted() {
@@ -33,9 +26,6 @@ export default {
   },
 
   methods: {
-    showTab(name) {
-      this.currentTab = name;
-    },
 
     async saveData(publish) {
       if (publish) {

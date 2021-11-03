@@ -2,7 +2,7 @@ require('dotenv').config()
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
-  ssr: false,
+  ssr: true,
   mode: 'universal',
   // Target: https://go.nuxtjs.dev/config-target
   target: 'server',
@@ -27,14 +27,16 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    /* '@/assets/scss/custom.scss' */
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/components',
     '~/plugins/composition-api.js',
+    '~/plugins/bootstrap.js',
     '~/plugins/storyblok-rich-text-renderer.js',
-    '~/plugins/blok-ink.js',
+    { src: '~/plugins/blok-ink.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -63,8 +65,25 @@ export default {
         secret: process.env.CONFIDENTIAL_CLIENT_SECRET,
         redirect_uri: process.env.CONFIDENTIAL_CLIENT_REDIRECT_URI
       }
-    ]
+    ],
+    'bootstrap-vue/nuxt'
   ],
+
+   // specify module rules for css and scss
+   module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+
+  // use these settings to use custom css
+  bootstrapVue: {
+    bootstrapCSS: false,
+    icons: true,
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
