@@ -4,7 +4,7 @@
       <b-pagination
         v-model="page"
         :total-rows="rows"
-        :per-page="perPage"
+        :per-page="page"
         @change="handlePageChange"
         pills
       ></b-pagination>
@@ -29,14 +29,13 @@ import FeaturedArticles from "~/components/FeaturedArticles.vue";
 export default {
   components: {
     StoryCard,
-    FeaturedArticles
+    FeaturedArticles,
   },
   data() {
     return {
       stories: [],
-      perPage: 2, // items per page
-      page: null, // current page
-      total: null, // total number of pages
+      perPage: 3, // stories per page
+      page: 1, // current page
       initialStories: [],
       storiesWithData: [],
       space_id: [],
@@ -50,7 +49,7 @@ export default {
     } else {
       // Init the stories and components list
       await this.getStories();
-      console.log(this.initialStories)
+      console.log(this.initialStories);
     }
   },
 
@@ -69,26 +68,25 @@ export default {
     },
 
     async getStories() {
-      let stories = [];
+      let stories = []
 
       let first_page = await axios.get(
         `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.perPage}&page=${this.page}`
-      )
-
-      let total_pages = Math.ceil(first_page.data.total / this.perPage);
+      );
 
       stories = stories.concat(first_page.data.stories);
 
+      let total_pages = Math.ceil(first_page.data.total / this.perPage);
+      console.log(total_pages)
+
       // Getting the components
-      this.stories = stories.slice(0);
+      this.stories = stories.slice(0, 3)
 
       // Getting the data of each story
       await Promise.all(
         stories.map((story) => {
           return axios
-            .get(
-              `/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`
-            )
+            .get(`/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`)
             .then((response) => {
               if (response.data.story) {
                 if (!response.data.story.content.seo) {
@@ -101,9 +99,7 @@ export default {
                 this.storiesWithData.push(
                   JSON.parse(JSON.stringify(response.data.story))
                 );
-                this.initialStories.push(
-                  JSON.parse(JSON.stringify(response.data.story))
-                );
+                this.initialStories.push(JSON.parse(JSON.stringify(response.data.story)));
               }
             })
             .catch((error) => {
@@ -111,17 +107,17 @@ export default {
             });
         })
       );
-    }
+    },
   },
 
   computed: {
-    filteredStories: function() {
-      return this.storiesWithData
+    filteredStories: function () {
+      return this.storiesWithData;
     },
-    rows: function() {
-      return this.storiesWithData.length
-    }
-  }
+    rows: function () {
+      return this.storiesWithData.length;
+    },
+  },
 };
 </script>
 
