@@ -33,7 +33,6 @@ export default {
   },
   data() {
     return {
-      components: [],
       stories: [],
       perPage: 2, // items per page
       page: null, // current page
@@ -41,10 +40,6 @@ export default {
       initialStories: [],
       storiesWithData: [],
       space_id: [],
-      current_space: null,
-      token: null,
-      keyword: '',
-      status: "",
     };
   },
 
