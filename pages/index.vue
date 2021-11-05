@@ -4,7 +4,7 @@
       <b-pagination
         v-model="page"
         :total-rows="rows"
-        :per-page="pageSize"
+        :per-page="perPage"
         @change="handlePageChange"
         pills
       ></b-pagination>
@@ -35,10 +35,8 @@ export default {
     return {
       components: [],
       stories: [],
-      perPage: 2,
-      page: 1, // current page
-      // count: 0, // total number of pages
-      pageSize: 3, // number of items on each page
+      perPage: 2, // items per page
+      page: null, // current page
       total: null, // total number of pages
       initialStories: [],
       storiesWithData: [],
@@ -70,9 +68,9 @@ export default {
       console.log(spaceData.data);
     },
 
-    handlePageChange(value, pageNum) {
+    handlePageChange(value) {
       this.page = value
-      this.getStories(pageNum)
+      this.getStories()
     },
 
     async getStories() {
@@ -82,7 +80,7 @@ export default {
         `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.perPage}&page=${this.page}`
       )
 
-      // let total_pages = Math.ceil(first_page.data.total / this.per_page);
+      let total_pages = Math.ceil(first_page.data.total / this.perPage);
 
       stories = stories.concat(first_page.data.stories);
 
