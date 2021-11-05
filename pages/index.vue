@@ -2,17 +2,20 @@
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
       <b-pagination
-      v-model="page"
-      :total-rows="count"
-      :per-page="pageSize"
-      prev-text="Prev"
-      next-text="Next"
-      @change="handlePageChange"
-    ></b-pagination>
+        v-model="page"
+        :total-rows="rows"
+        :per-page="pageSize"
+        @change="handlePageChange"
+        pills
+      ></b-pagination>
     </div>
     <div class="container">
       <div class="stories flex flex-col justify-center">
-        <story-card v-for="story in filteredStories" v-bind:key="story.id" v-bind:data="story" />
+        <story-card
+          v-for="story in filteredStories"
+          v-bind:key="story.id"
+          v-bind:data="story"
+        />
       </div>
     </div>
   </div>
@@ -32,18 +35,14 @@ export default {
     return {
       components: [],
       stories: [],
-      per_page: 2,
       perPage: 2,
       page: 1, // current page
-      count: 0, // total number of pages
+      // count: 0, // total number of pages
       pageSize: 3, // number of items on each page
-      pageSizes: [3, 6, 9],
-      total: null,
-      currentPage: 1,
+      total: null, // total number of pages
       initialStories: [],
       storiesWithData: [],
       space_id: [],
-      component: "none",
       current_space: null,
       token: null,
       keyword: '',
@@ -71,70 +70,26 @@ export default {
       console.log(spaceData.data);
     },
 
-    getRequestParams(page) {
-      let params = {}
-
-      if (page) {
-        params['page'] = page - 1
-      }
-
-      if (pageSize) {
-        params["size"] = pageSize;
-      }
-
-      return params 
-    },
-
-    handlePageChange(value) {
-      this.page = value 
-      this.getStories()
-    },
-
-    retrieveStories() {
-      const params = this.getRequestParams(
-        this.page,
-        this.pageSize
-      )
+    handlePageChange(value, pageNum) {
+      this.page = value
+      this.getStories(pageNum)
     },
 
     async getStories() {
       let stories = [];
 
-      // Get the first page
       let first_page = await axios.get(
-        `/auth/spaces/${this.$route.query.space_id}/stories?`
-      );
-      let pages_requests = [];
+        `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.perPage}&page=${this.page}`
+      )
+
+      // let total_pages = Math.ceil(first_page.data.total / this.per_page);
+
       stories = stories.concat(first_page.data.stories);
-
-      // Eventually Getting Other Pages
-  /*     if (first_page.data.total > 1) {
-        let total_pages = Math.ceil(first_page.data.total / this.per_page);
-
-        for (var i = 2; i <= total_pages; i++) {
-          pages_requests.push(
-            axios.get(
-              `/auth/spaces/${this.$route.query.space_id}/=1&per_page=${this.per_page}&page=${i}&sort_by=name:asc`
-            )
-            .then((res) => {
-              // this.per_page = res.data.per_page
-              // this.total = res.data.total
-              // this.stories = res.data.stories
-            })
-          );
-        }
-
-        let pages_requests_data = await Promise.all(pages_requests);
-        pages_requests_data.forEach((req) => {
-          stories = stories.concat(req.data.stories);
-        });
-      } */
 
       // Getting the components
       this.stories = stories.slice(0);
 
       // Getting the data of each story
-      let storiesWithData = [];
       await Promise.all(
         stories.map((story) => {
           return axios
@@ -163,30 +118,32 @@ export default {
             });
         })
       );
-      
-    },
+    }
   },
 
   computed: {
     filteredStories: function() {
       return this.storiesWithData
     },
-  },
+    rows: function() {
+      return this.storiesWithData.length
+    }
+  }
 };
 </script>
 
 <style scoped>
-  .container {
-    padding: 0 25px;
-  }
+.container {
+  padding: 0 25px;
+}
 
-  .stories {
-    padding: 20px 0;
-    width: 100%;
-  }
+.stories {
+  padding: 20px 0;
+  width: 100%;
+}
 
-  .search {
-    background-color: #fff;
-    padding: 6px 0;
-  }
+.search {
+  background-color: #fff;
+  padding: 6px 0;
+}
 </style>
