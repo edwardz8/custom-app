@@ -74,13 +74,12 @@ export default {
         `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.perPage}&page=${this.page}`
       );
 
-      stories = stories.concat(first_page.data.stories);
+      stories = first_page.data.stories
 
       let total_pages = Math.ceil(first_page.data.total / this.perPage);
-      console.log(total_pages)
 
       // Getting the components
-      this.stories = stories.slice(0, 3)
+      this.stories = stories.slice(total_pages)
 
       // Getting the data of each story
       await Promise.all(
