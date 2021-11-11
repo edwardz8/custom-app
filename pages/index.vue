@@ -2,11 +2,11 @@
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
       <b-pagination
-        v-model="page"
-        :total-rows="this.total"
-        :per-page="page"
+        v-model="current"
+        :total-rows="this.paginatedStories.length"
+        :per-page="pageSize"
         @change="handlePageChange"
-        pills
+        pills 
       ></b-pagination>
     </div>
     <div class="container">
@@ -34,10 +34,11 @@ export default {
   data() {
     return {
       stories: [],
-      perPage: 3, // stories per page
-      page: 1, // current page
-      total: null, // all stories
+      pageSize: 3, // stories per page
+      current: 1, // current page
+      total: 2, // all stories
       storiesWithData: [],
+      initialStories: [],
       space_id: [],
     };
   },
@@ -55,9 +56,17 @@ export default {
 
   methods: {
     handlePageChange(value) {
-      this.page = value
+      this.current = value
       this.getStories()
     },
+
+    /* prev() {
+      this.current--
+    },
+
+    next() {
+      this.current++
+    }, */
 
     async getStories() {
       let stories = []
@@ -68,7 +77,7 @@ export default {
 
       stories = all_pages.data.stories
 
-      this.total = Math.ceil(all_pages.data.total / this.perPage);
+      this.total = Math.ceil(all_pages.data.total / this.pageSize);
 
       await Promise.all(
         stories.map((story) => {
@@ -83,10 +92,12 @@ export default {
                     plugin: "meta-fields",
                   };
                 }
+                // this.storiesWithData.push(...this.initialStories(JSON.parse(JSON.stringify(res.data.story)))
+                // when i don't parse res.data.story i don't get the story data and stories don't display
                 this.storiesWithData.push(JSON.parse(JSON.stringify(res.data.story))
                 );
-                // this.initialStories.push(JSON.parse(JSON.stringify(response.data.story)));
               }
+                // stories.push(...this.initialStories(JSON.parse(JSON.stringify(res.data.story))))
             })
             .catch((error) => {
               console.log(error);
@@ -97,9 +108,18 @@ export default {
   },
 
   computed: {
-    filteredStories: function () {
-      return this.storiesWithData;
+    indexStart() {
+      return(this.current - 1) * this.pageSize
     },
+    indexEnd() {
+      return this.indexStart + this.pageSize 
+    },
+    paginatedStories: function () {
+      return this.storiesWithData.slice(this.indexStart, this.indexEnd)
+    },
+    filteredStories: function () {
+      return this.storiesWithData
+    }
   },
 };
 </script>
