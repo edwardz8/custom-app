@@ -3,7 +3,7 @@
     <div class="w-full flex justify-center py-4">
       <b-pagination
         v-model="page"
-        :total-rows="rows"
+        :total-rows="this.total"
         :per-page="page"
         @change="handlePageChange"
         pills
@@ -36,7 +36,7 @@ export default {
       stories: [],
       perPage: 3, // stories per page
       page: 1, // current page
-      initialStories: [],
+      total: null, // all stories
       storiesWithData: [],
       space_id: [],
     };
@@ -44,24 +44,16 @@ export default {
 
   async mounted() {
     if (window.top == window.self) {
-      // Redirect if it's outside Storyblok
+      // Redirect if outside Storyblok
       window.location.assign("https://app.storyblok.com/oauth/app_redirect");
     } else {
-      // Init the stories and components list
-      await this.getStories();
-      console.log(this.initialStories);
+      // Init the stories 
+      await this.handlePageChange();
+      // console.log(this.stories);
     }
   },
 
   methods: {
-    async getSpace() {
-      console.log(this.$route);
-      const spaceData = await axios.get(
-        `/auth/spaces/${this.$route.query.space_id}/space`
-      );
-      console.log(spaceData.data);
-    },
-
     handlePageChange(value) {
       this.page = value
       this.getStories()
@@ -70,35 +62,30 @@ export default {
     async getStories() {
       let stories = []
 
-      let first_page = await axios.get(
+      let all_pages = await axios.get(
         `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.perPage}&page=${this.page}`
       );
 
-      stories = first_page.data.stories
+      stories = all_pages.data.stories
 
-      let total_pages = Math.ceil(first_page.data.total / this.perPage);
+      this.total = Math.ceil(all_pages.data.total / this.perPage);
 
-      // Getting the components
-      this.stories = stories.slice(total_pages)
-
-      // Getting the data of each story
       await Promise.all(
         stories.map((story) => {
           return axios
             .get(`/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`)
-            .then((response) => {
-              if (response.data.story) {
-                if (!response.data.story.content.seo) {
-                  response.data.story.content.seo = {
+            .then((res) => {
+              if (res.data.story) {
+                if (!res.data.story.content.seo) {
+                  res.data.story.content.seo = {
                     title: "",
                     description: "",
                     plugin: "meta-fields",
                   };
                 }
-                this.storiesWithData.push(
-                  JSON.parse(JSON.stringify(response.data.story))
+                this.storiesWithData.push(JSON.parse(JSON.stringify(res.data.story))
                 );
-                this.initialStories.push(JSON.parse(JSON.stringify(response.data.story)));
+                // this.initialStories.push(JSON.parse(JSON.stringify(response.data.story)));
               }
             })
             .catch((error) => {
@@ -112,9 +99,6 @@ export default {
   computed: {
     filteredStories: function () {
       return this.storiesWithData;
-    },
-    rows: function () {
-      return this.storiesWithData.length;
     },
   },
 };

@@ -26,7 +26,6 @@ export default {
   },
 
   methods: {
-
     async saveData(publish) {
       if (publish) {
         this.open = false;
@@ -70,11 +69,11 @@ export default {
     >
       <div>
         <h4 class="text-gray-800 text-3xl font-semibold">{{ story.name }}</h4>
-        <p class="mt-2 text-gray-200 text-xl">{{ story.content.intro }}</p>
-        <p class="mt-2 text-gray-200 text-xl">{{ story.content.seo.description }}</p>
-        <p class="mt-2 text-gray-200 text-xl">{{ story.content.seo.title }}</p>
-        <p class="mt-4 text-red-200 font-bold text-xl">Published: {{ story.published }}</p>
-        <p class="mt-2 text-green-200 font-bold text-xl">Draft: {{ story.unpublished_changes }}</p>
+        <p class="mt-2 text-gray-900 text-xl">{{ story.content.intro }}</p>
+        <p class="mt-2 text-gray-900 text-xl">{{ story.content.seo.description }}</p>
+        <p class="mt-2 text-gray-900 text-xl">{{ story.content.seo.title }}</p>
+        <p class="mt-4 text-red-400 font-bold text-xl">Published: {{ story.published }}</p>
+        <p class="mt-2 text-green-400 font-bold text-xl">Draft: {{ story.unpublished_changes }}</p>
       </div>
       <div class="flex justify-end mt-4">
         <button
