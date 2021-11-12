@@ -1,9 +1,21 @@
 {
     "builds": [
-      {
-        "src": "nuxt.config.js",
-        "use": "@nuxtjs/vercel-builder",
-        "config": {}
-      }
+        {
+            "src": "nuxt.config.js",
+            "use": "@nuxtjs/vercel-builder",
+            "config": {
+                "env": {
+                    "BASE_URL": true,
+                    "CONFIDENTIAL_CLIENT_ID": true,
+                    "CONFIDENTIAL_CLIENT_SECRET": true,
+                    "CONFIDENTIAL_CLIENT_REDIRECT_URI": true
+                },
+                "build": {
+                    "env": {
+                        "MY_VARIABLE": true
+                    }
+                }
+            }
+        }
     ]
-  }
+}
