@@ -3,7 +3,7 @@
     <div class="w-full flex justify-center py-4">
       <b-pagination
         v-model="current"
-        :total-rows="this.paginatedStories.length"
+        :total-rows="total"
         :per-page="pageSize"
         @change="handlePageChange"
         pills 
@@ -12,7 +12,7 @@
     <div class="container">
       <div class="stories flex flex-col justify-center">
         <story-card
-          v-for="story in filteredStories"
+          v-for="story in storiesWithData"
           v-bind:key="story.id"
           v-bind:data="story"
         />
@@ -33,13 +33,13 @@ export default {
   },
   data() {
     return {
-      stories: [],
+      // stories: [],
       pageSize: 3, // stories per page
       current: 1, // current page
-      total: 2, // all stories
+      total: null, // all stories
       storiesWithData: [],
-      initialStories: [],
-      space_id: [],
+      /* initialStories: [],
+      space_id: [], */
     };
   },
 
@@ -70,35 +70,23 @@ export default {
   },
 
   methods: {
-    // should parameter be value = 1 ?
     handlePageChange(value) {
       this.current = value
       this.getStories()
     },
 
-    /* prev() {
-      this.current--
-    },
-
-    next() {
-      this.current++
-    }, */
-
     async getStories() {
-      let stories = []
-
-      // let initialStories = []
 
       let all_pages = await axios.get(
-        `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.perPage}&page=${this.page}`
+        `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.pageSize}&page=${this.current}`
       );
+      
+      this.storiesWithData = []
 
-      stories = all_pages.data.stories
-
-      this.total = Math.ceil(all_pages.data.total / this.pageSize);
+      this.total = all_pages.data.total
 
       await Promise.all(
-        stories.map((story) => {
+        all_pages.data.stories.map((story) => {
           return axios
             .get(`/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`)
             .then((res) => {
@@ -112,10 +100,6 @@ export default {
                 }
                 this.storiesWithData.push(JSON.parse(JSON.stringify(res.data.story))
 
-                // ^ when res.data.story isn't parsed and stringified the story data and stories don't display
-                // should i take the initialStories array from above and push 
-                // the storiesWithData into the initialStories like so: 
-                // this.storiesWithData.push(...this.initialStories(JSON.parse(JSON.stringify(res.data.story)))
                 );
               }
             })
