@@ -5,14 +5,13 @@
             "use": "@nuxtjs/vercel-builder",
             "config": {
                 "env": {
-                    "BASE_URL": true,
                     "CONFIDENTIAL_CLIENT_ID": "eEzS/O9kvztN0GVE2pqtJQ==",
-                    "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ==",
-                    "CONFIDENTIAL_CLIENT_REDIRECT_URI": "https://7bc0-24-214-130-95.ngrok.io/auth/callback"
+                    "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ=="
                 },
                 "build": {
                     "env": {
-                        "MY_VARIABLE": true
+                        "CONFIDENTIAL_CLIENT_ID": "eEzS/O9kvztN0GVE2pqtJQ==",
+                        "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ=="
                     }
                 }
             }
