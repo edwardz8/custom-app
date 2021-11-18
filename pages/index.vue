@@ -61,9 +61,6 @@ export default {
     indexEnd() {
       return this.indexStart + this.pageSize 
     },
-    paginatedStories: function () {
-      return this.storiesWithData.slice(this.indexStart, this.indexEnd)
-    },
     filteredStories: function () {
       return this.storiesWithData
     }

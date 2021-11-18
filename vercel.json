@@ -6,9 +6,9 @@
             "config": {
                 "env": {
                     "BASE_URL": true,
-                    "CONFIDENTIAL_CLIENT_ID": true,
-                    "CONFIDENTIAL_CLIENT_SECRET": true,
-                    "CONFIDENTIAL_CLIENT_REDIRECT_URI": true
+                    "CONFIDENTIAL_CLIENT_ID": "eEzS/O9kvztN0GVE2pqtJQ==",
+                    "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ==",
+                    "CONFIDENTIAL_CLIENT_REDIRECT_URI": "https://7bc0-24-214-130-95.ngrok.io/auth/callback"
                 },
                 "build": {
                     "env": {
