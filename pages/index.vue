@@ -11,11 +11,16 @@
     </div>
     <div class="container">
       <div class="stories flex flex-col justify-center">
+        <div v-if="loading">
+        <Loader />
+        </div>
+        <div v-else> 
         <story-card
           v-for="story in storiesWithData"
           v-bind:key="story.id"
           v-bind:data="story"
         />
+        </div>
       </div>
     </div>
   </div>
@@ -25,21 +30,20 @@
 import axios from "axios";
 import StoryCard from "~/components/StoryCard.vue";
 import FeaturedArticles from "~/components/FeaturedArticles.vue";
-
+import Loader from '~/components/Loader.vue'
 export default {
   components: {
     StoryCard,
     FeaturedArticles,
+    Loader,
   },
   data() {
     return {
-      // stories: [],
+      storiesWithData: [],
       pageSize: 3, // stories per page
       current: 1, // current page
       total: null, // all stories
-      storiesWithData: [],
-      /* initialStories: [],
-      space_id: [], */
+      loading: true,
     };
   },
 
@@ -50,17 +54,10 @@ export default {
     } else {
       // Init the stories 
       await this.handlePageChange();
-      // console.log(this.stories);
     }
   },
 
   computed: {
-    indexStart() {
-      return(this.current - 1) * this.pageSize
-    },
-    indexEnd() {
-      return this.indexStart + this.pageSize 
-    },
     filteredStories: function () {
       return this.storiesWithData
     }
@@ -73,7 +70,6 @@ export default {
     },
 
     async getStories() {
-
       let all_pages = await axios.get(
         `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.pageSize}&page=${this.current}`
       );

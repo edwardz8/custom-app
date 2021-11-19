@@ -35,8 +35,7 @@ export default {
     '~/plugins/components',
     '~/plugins/composition-api.js',
     '~/plugins/bootstrap.js',
-    '~/plugins/storyblok-rich-text-renderer.js',
-    { src: '~/plugins/blok-ink.js', ssr: false }
+    '~/plugins/storyblok-rich-text-renderer.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -90,5 +89,21 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: [''],
+    extend(config, context) {
+      config.module.rules.push({
+        test: /\.(sass|scss)$/,
+        use: {
+          loader: "sass-loader",
+          options: {
+            additionalData: `
+        @import "~storyblok-design-system/src/assets/styles/variables.scss";
+        @import "~storyblok-design-system/src/assets/styles/global.scss";
+        @import "~storyblok-design-system/src/assets/styles/resets.scss";
+        @import "~storyblok-design-system/src/assets/styles/mixins.scss";`
+          }
+        }
+      })
+    }
   }
 }
