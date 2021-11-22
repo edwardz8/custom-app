@@ -34,7 +34,7 @@ export default {
   plugins: [
     '~/plugins/components',
     '~/plugins/composition-api.js',
-    '~/plugins/bootstrap.js',
+    /* '~/plugins/bootstrap.js', */
     '~/plugins/storyblok-rich-text-renderer.js'
   ],
 
@@ -65,7 +65,7 @@ export default {
         redirect_uri: process.env.CONFIDENTIAL_CLIENT_REDIRECT_URI
       }
     ],
-    'bootstrap-vue/nuxt'
+    // 'bootstrap-vue/nuxt'
   ],
 
    // specify module rules for css and scss
@@ -79,10 +79,10 @@ export default {
   },
 
   // use these settings to use custom css
-  bootstrapVue: {
-    bootstrapCSS: false,
+ /*  bootstrapVue: {
+    bootstrapCSS: true,
     icons: true,
-  },
+  }, */
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},

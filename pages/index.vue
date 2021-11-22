@@ -1,13 +1,13 @@
 <template>
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
-     <b-pagination
+     <!-- <b-pagination
         v-model="current"
         :total-rows="total"
         :per-page="pageSize"
         @change="handlePageChange"
         pills 
-      ></b-pagination>
+      ></b-pagination> -->
     </div>
     <div class="container">
       <div class="stories flex flex-col justify-center">
