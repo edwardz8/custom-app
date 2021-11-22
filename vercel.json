@@ -6,12 +6,14 @@
             "config": {
                 "env": {
                     "CONFIDENTIAL_CLIENT_ID": "eEzS/O9kvztN0GVE2pqtJQ==",
-                    "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ=="
+                    "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ==",
+                    "CONFIDENTIAL_CLIENT_REDIRECT_URI": "https://custom-app.vercel.app/auth/callback"
                 },
                 "build": {
                     "env": {
                         "CONFIDENTIAL_CLIENT_ID": "eEzS/O9kvztN0GVE2pqtJQ==",
-                        "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ=="
+                        "CONFIDENTIAL_CLIENT_SECRET": "4VDoYrBjGZBnGb+xa41s+Tk7fRoHT+D+qhJELsHOU8xgE0DsqlHKLxoGWwspvAHAri37nSo5ThnWpfTQJInejQ==",
+                        "CONFIDENTIAL_CLIENT_REDIRECT_URI": "https://custom-app.vercel.app/auth/callback"
                     }
                 }
             }
