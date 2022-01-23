@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
-     <!-- <b-pagination
+    <!--  <b-pagination
         v-model="current"
         :total-rows="total"
         :per-page="pageSize"
@@ -29,13 +29,10 @@
 <script>
 import axios from "axios";
 import StoryCard from "~/components/StoryCard.vue";
-import FeaturedArticles from "~/components/FeaturedArticles.vue";
-// import Loader from '~/components/Loader.vue'
+
 export default {
   components: {
     StoryCard,
-    FeaturedArticles,
-    // Loader,
   },
   data() {
     return {
