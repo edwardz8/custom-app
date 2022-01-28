@@ -2,21 +2,16 @@
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
       <nav
-        class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-        aria-label="Pagination"
+        class="inline-flex rounded shadow-sm"
+        aria-label="pagination"
       >
         <a
           v-for="pageNumber in totalPages"
           :key="pageNumber"
           @click="setPage(pageNumber)"
-          class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+          class="relative inline-flex items-center px-2 py-2 rounded border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
         >
           <span>{{ pageNumber }}</span>
-        </a>
-        <a
-          aria-current="page"
-          class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-        >
         </a>
       </nav>
     </div>
@@ -60,16 +55,12 @@ export default {
 
   computed: {
     totalPages: function () {
-      if (this.total == 0) {
-        return 1;
-      } else {
         return Math.ceil(this.total / this.pageSize);
-      }
     },
     paginate: function () {
       if (
         !this.storiesWithData ||
-        this.storiesWithData.length != this.storiesWithData.length
+        this.storiesWithData.length != this.storiesWithData.length - 1
       ) {
         return;
       }
@@ -131,10 +122,5 @@ export default {
 .stories {
   padding: 20px 0;
   width: 100%;
-}
-
-.search {
-  background-color: #fff;
-  padding: 6px 0;
 }
 </style>
