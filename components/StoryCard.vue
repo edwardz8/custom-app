@@ -65,25 +65,25 @@ export default {
     <div
       :key="story.id"
       v-if="story && story.content"
-      class="py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
+      class="py-4 px-6 bg-white shadow-lg rounded-lg my-2 mx-2"
     >
       <div>
-        <h4 class="text-gray-800 text-3xl font-semibold">{{ story.name }}</h4>
-        <p class="mt-2 text-gray-900 text-xl">{{ story.content.intro }}</p>
-        <p class="mt-2 text-gray-900 text-xl">{{ story.content.seo.description }}</p>
-        <p class="mt-2 text-gray-900 text-xl">{{ story.content.seo.title }}</p>
-        <p class="mt-4 text-red-400 font-bold text-xl">Published: {{ story.published }}</p>
-        <p class="mt-2 text-green-400 font-bold text-xl">Draft: {{ story.unpublished_changes }}</p>
+        <h4 class="text-gray-800 text-xl font-semibold">{{ story.name }}</h4>
+        <p class="mt-2 text-gray-900 text-lg">{{ story.content.intro }}</p>
+        <p class="mt-2 text-gray-900 text-lg">{{ story.content.seo.description }}</p>
+        <p class="mt-2 text-gray-900 text-lg">{{ story.content.seo.title }}</p>
+        <p class="mt-4 text-red-400 font-bold text-lg">Published: {{ story.published }}</p>
+        <p class="mt-2 text-green-400 font-bold text-lg">Draft: {{ story.unpublished_changes }}</p>
       </div>
       <div class="flex justify-end mt-4">
         <button
-          class="mx-2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          class="mx-2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded"
           @click="saveData()"
         >
           Save Draft
         </button>
         <button
-          class="mx-2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          class="mx-2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded"
           @click="saveData(true)"
         >
           Publish

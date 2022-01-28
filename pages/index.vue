@@ -1,25 +1,33 @@
 <template>
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
-    <!--  <b-pagination
-        v-model="current"
-        :total-rows="total"
-        :per-page="pageSize"
-        @change="handlePageChange"
-        pills 
-      ></b-pagination> -->
+      <nav
+        class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+        aria-label="Pagination"
+      >
+        <a
+          v-for="pageNumber in totalPages"
+          :key="pageNumber"
+          @click="setPage(pageNumber)"
+          class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+        >
+          <span>{{ pageNumber }}</span>
+        </a>
+        <a
+          aria-current="page"
+          class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+        >
+        </a>
+      </nav>
     </div>
     <div class="container">
       <div class="stories flex flex-col justify-center">
-        <div v-if="loading">
-        <!-- <Loader /> -->
-        </div>
-        <div> 
-        <story-card
-          v-for="story in storiesWithData"
-          v-bind:key="story.id"
-          v-bind:data="story"
-        />
+        <div>
+          <story-card
+            v-for="story in storiesWithData"
+            v-bind:key="story.id"
+            v-bind:data="story"
+          />
         </div>
       </div>
     </div>
@@ -31,16 +39,12 @@ import axios from "axios";
 import StoryCard from "~/components/StoryCard.vue";
 
 export default {
-  components: {
-    StoryCard,
-  },
   data() {
     return {
       storiesWithData: [],
-      pageSize: 3, // stories per page
-      current: 1, // current page
+      pageSize: 3, // stories per page (itemsPerPage)
+      current: 1, // current page (currentPage)
       total: null, // all stories
-      loading: true,
     };
   },
 
@@ -49,31 +53,49 @@ export default {
       // Redirect if outside Storyblok
       window.location.assign("https://app.storyblok.com/oauth/app_redirect");
     } else {
-      // Init the stories 
-      await this.handlePageChange();
+      // Init the stories
+      await this.setPage();
     }
   },
 
   computed: {
-    filteredStories: function () {
-      return this.storiesWithData
-    }
+    totalPages: function () {
+      if (this.total == 0) {
+        return 1;
+      } else {
+        return Math.ceil(this.total / this.pageSize);
+      }
+    },
+    paginate: function () {
+      if (
+        !this.storiesWithData ||
+        this.storiesWithData.length != this.storiesWithData.length
+      ) {
+        return;
+      }
+      this.total = this.articles.length;
+      if (this.current >= this.totalPages) {
+        this.current = this.totalPages;
+      }
+      var index = this.current * this.pageSize - this.pageSize;
+      return this.articles.slice(index, index + this.pageSize);
+    },
   },
 
   methods: {
-    handlePageChange(value) {
-      this.current = value
-      this.getStories()
+    setPage: function (pageNumber) {
+      this.current = pageNumber;
+      this.getStories();
     },
 
     async getStories() {
       let all_pages = await axios.get(
         `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.pageSize}&page=${this.current}`
       );
-      
-      this.storiesWithData = []
 
-      this.total = all_pages.data.total
+      this.storiesWithData = [];
+
+      this.total = all_pages.data.total;
 
       await Promise.all(
         all_pages.data.stories.map((story) => {
@@ -88,9 +110,7 @@ export default {
                     plugin: "meta-fields",
                   };
                 }
-                this.storiesWithData.push(JSON.parse(JSON.stringify(res.data.story))
-
-                );
+                this.storiesWithData.push(JSON.parse(JSON.stringify(res.data.story)));
               }
             })
             .catch((error) => {
