@@ -80,16 +80,16 @@ export default {
     },
 
     async getStories() {
-      let all_pages = await axios.get(
+      let page = await axios.get(
         `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.pageSize}&page=${this.current}`
       );
 
       this.storiesWithData = [];
 
-      this.total = all_pages.data.total;
+      this.total = page.data.total;
 
       await Promise.all(
-        all_pages.data.stories.map((story) => {
+        page.data.stories.map((story) => {
           return axios
             .get(`/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`)
             .then((res) => {

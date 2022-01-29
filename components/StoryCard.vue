@@ -37,8 +37,8 @@ export default {
         },
       };
 
-      if (storyData.story.content) {
-        for (const story of storyData.story.content) {
+      if (storyData.story.content.body) {
+        for (const story of storyData.story.content.body) {
           delete story.uuid;
         }
         console.log(this.story, storyData);
@@ -62,32 +62,43 @@ export default {
 
 <template>
   <div class="container mx-auto">
-
     <div
       :key="story.id"
-      v-if="story && story.content"
-      class="py-4 px-6 bg-white shadow-lg rounded-lg my-2 mx-2"
+      v-if="story && story.content && story.content.name"
+      class="py-4 px-6 bg-white shadow-md rounded my-2 mx-2"
     >
-    <form>
       <div>
-        <h6 class="text-gray-800 text-md font-semibold">{{ story.name }}</h6>
-        <p class="mt-2 text-gray-900 text-sm">{{ story.content.intro }}</p>
-        <p class="mt-2 text-gray-900 text-sm">{{ story.content.seo.description }}</p>
-        <p class="mt-2 text-gray-900 text-sm">{{ story.content.seo.title }}</p>
-        <p class="mt-4 text-red-400 font-bold text-sm">Published: {{ story.published }}</p>
-        <p class="mt-2 text-green-400 font-bold text-sm">Draft: {{ story.unpublished_changes }}</p>
+        <label class="block text-gray-800 text-sm font-bold mb-2" for="name">Name</label>
+        <input type="text" v-model="story.content.name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" />
       </div>
+      <div>
+        <label class="block text-gray-800 text-sm font-bold mb-2" for="intro">Intro</label>
+        <input type="text" v-model="story.content.intro" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" />
+      </div>
+      <div>
+        <label class="block text-gray-800 text-sm font-bold mb-2" for="title">Title</label>
+        <input type="text" v-model="story.content.seo.title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" />
+      </div>
+      <div>
+        <label class="block text-gray-800 text-sm font-bold mb-2" for="description">Description</label>
+        <input type="text" v-model="story.content.seo.description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" />
+      </div>
+        <p class="mt-4 text-green-400 text-sm">{{ story.published ? 'PUBLISHED' : 'Not PUBLISHED' }} <span> and {{ story.unpublished_changes ? 'DRAFT available' : 'no DRAFT available' }}</span></p>
 
       <div class="flex justify-end mt-4">
         <button
-          class="mx-2 bg-blue-300 hover:bg-blue-400 text-gray-800 py-2 px-4 rounded"
+          class="mx-2 bg-gray-800 hover:bg-blue-400 text-gray-100 py-2 px-4 rounded"
           @click="saveData()"
         >
           Save Draft
         </button>
+        <button
+          class="mx-2 bg-gray-800 hover:bg-blue-400 text-gray-100 py-2 px-4 rounded"
+          @click="saveData(true)"
+        >
+          Publish
+        </button>
       </div>
-      </form>
-
       </div>
 
   </div>
