@@ -49,27 +49,13 @@ export default {
       window.location.assign("https://app.storyblok.com/oauth/app_redirect");
     } else {
       // Init the stories
-      await this.setPage();
+      await this.setPage(1);
     }
   },
 
   computed: {
     totalPages: function () {
         return Math.ceil(this.total / this.pageSize);
-    },
-    paginate: function () {
-      if (
-        !this.storiesWithData ||
-        this.storiesWithData.length != this.storiesWithData.length - 1
-      ) {
-        return;
-      }
-      this.total = this.articles.length;
-      if (this.current >= this.totalPages) {
-        this.current = this.totalPages;
-      }
-      var index = this.current * this.pageSize - this.pageSize;
-      return this.articles.slice(index, index + this.pageSize);
     },
   },
 
