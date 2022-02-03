@@ -7,9 +7,7 @@ export default {
       required: true,
     },
   },
-
   props: ["data"],
-
   data() {
     return {
       story: {},
@@ -26,25 +24,17 @@ export default {
 
   methods: {
     async saveData(publish) {
-
       let storyData = {
         story: {
           content: this.story.content,
         },
       };
 
-      console.log(storyData, "story data");
-
-      console.log(this.story.content, "story content");
-
       if (publish) {
-        storyData.publish = 1;
         this.story.unpublished_changes = false;
       } else {
         this.story.unpublished_changes = true;
       }
-
-      console.log(this.story.content, "story");
 
       return axios.put(
         `/auth/spaces/${this.$route.query.space_id}/stories/${this.story.id}`,
@@ -63,7 +53,7 @@ export default {
       class="py-4 px-6 bg-white shadow-md rounded my-2 mx-2"
     >
       <div>
-        <label class="block text-gray-800 text-sm font-bold mb-2" for="title"
+        <label class="block text-gray-800 text-sm font-bold mb-2 mt-2" for="title"
           >Title</label
         >
         <input
@@ -74,7 +64,7 @@ export default {
         />
       </div>
       <div>
-        <label class="block text-gray-800 text-sm font-bold mb-2" for="description"
+        <label class="block text-gray-800 text-sm font-bold mb-2 mt-2" for="description"
           >Description</label
         >
         <input
@@ -84,23 +74,16 @@ export default {
           id="name"
         />
       </div>
-      <p class="mt-4 text-green-400 text-sm">
-        {{ story.published === true ? "PUBLISHED" : "Not PUBLISHED" }}
-        <span>
-          and
-          {{ story.unpublished_changes === true ? "DRAFT available" : "no DRAFT available" }}</span
-        >
-      </p>
 
       <div class="flex justify-end mt-4">
-        <button
-          class="mx-2 bg-gray-800 hover:bg-blue-400 text-gray-100 py-2 px-4 rounded"
+        <button :disabled="!!story.unpublished_changes"
+          class="mx-2 bg-gray-800 hover:bg-blue-900 text-gray-100 py-2 px-4 rounded"
           @click="saveData()"
         >
           Save Draft
         </button>
-        <button
-          class="mx-2 bg-gray-800 hover:bg-blue-400 text-gray-100 py-2 px-4 rounded"
+        <button :disabled="!!story.published"
+          class="mx-2 bg-gray-800 hover:bg-blue-900 text-gray-100 py-2 px-4 rounded"
           @click="saveData(true)"
         >
           Publish

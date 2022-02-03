@@ -79,7 +79,6 @@ export default {
           return axios
             .get(`/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`)
             .then((res) => {
-              if (res.data.story) {
                 if (!res.data.story.content.seo) {
                   res.data.story.content.seo = {
                     title: "",
@@ -88,7 +87,6 @@ export default {
                   };
                 }
                 this.storiesWithData.push(JSON.parse(JSON.stringify(res.data.story)));
-              }
             })
             .catch((error) => {
               console.log(error);
