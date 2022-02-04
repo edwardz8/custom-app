@@ -1,34 +1,3 @@
-<template>
-  <div class="container mx-auto">
-    <div class="w-full flex justify-center py-4">
-      <nav
-        class="inline-flex rounded shadow-sm"
-        aria-label="pagination"
-      >
-        <a
-          v-for="pageNumber in totalPages"
-          :key="pageNumber"
-          @click="setPage(pageNumber)"
-          class="relative inline-flex items-center px-2 py-2 rounded border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-        >
-          <span>{{ pageNumber }}</span>
-        </a>
-      </nav>
-    </div>
-    <div class="container">
-      <div class="stories flex flex-col justify-center">
-        <div>
-          <story-card
-            v-for="story in storiesWithData"
-            v-bind:key="story.id"
-            v-bind:data="story"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
 import axios from "axios";
 import StoryCard from "~/components/StoryCard.vue";
@@ -37,8 +6,8 @@ export default {
   data() {
     return {
       storiesWithData: [],
-      pageSize: 3, // stories per page (itemsPerPage)
-      current: 1, // current page (currentPage)
+      pageSize: 3, // stories per page
+      current: 1, // current page
       total: null, // all stories
     };
   },
@@ -55,7 +24,7 @@ export default {
 
   computed: {
     totalPages: function () {
-        return Math.ceil(this.total / this.pageSize);
+      return Math.ceil(this.total / this.pageSize);
     },
   },
 
@@ -79,14 +48,14 @@ export default {
           return axios
             .get(`/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`)
             .then((res) => {
-                if (!res.data.story.content.seo) {
-                  res.data.story.content.seo = {
-                    title: "",
-                    description: "",
-                    plugin: "meta-fields",
-                  };
-                }
-                this.storiesWithData.push(JSON.parse(JSON.stringify(res.data.story)));
+              if (!res.data.story.content.seo) {
+                res.data.story.content.seo = {
+                  title: "",
+                  description: "",
+                  plugin: "meta-fields",
+                };
+              }
+              this.storiesWithData.push(res.data.story);
             })
             .catch((error) => {
               console.log(error);
@@ -98,13 +67,30 @@ export default {
 };
 </script>
 
-<style scoped>
-.container {
-  padding: 0 25px;
-}
-
-.stories {
-  padding: 20px 0;
-  width: 100%;
-}
-</style>
+<template>
+  <div class="container mx-auto">
+    <div class="w-full flex justify-center py-4">
+      <nav class="inline-flex rounded shadow-sm" aria-label="pagination">
+        <a
+          v-for="pageNumber in totalPages"
+          :key="pageNumber"
+          @click="setPage(pageNumber)"
+          class="relative inline-flex items-center px-2 py-2 rounded border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+        >
+          <span>{{ pageNumber }}</span>
+        </a>
+      </nav>
+    </div>
+    <div class="container">
+      <div class="w-100 px-20 flex flex-col justify-center">
+        <div>
+          <story-card
+            v-for="story in storiesWithData"
+            v-bind:key="story.id"
+            v-bind:data="story"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

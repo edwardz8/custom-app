@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+
 export default {
   props: {
     blok: {
@@ -19,7 +20,7 @@ export default {
       if (!this.data.content.body) {
         this.data.content.body = [];
       }
-    this.story = this.data;
+      this.story = this.data;
   },
 
   methods: {
