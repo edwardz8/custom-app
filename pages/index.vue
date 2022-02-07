@@ -1,6 +1,7 @@
 <script>
 import axios from "axios";
 import StoryCard from "~/components/StoryCard.vue";
+import {getStories} from './../lib/utils'
 
 export default {
   data() {
@@ -29,40 +30,12 @@ export default {
   },
 
   methods: {
-    setPage: function (pageNumber) {
-      this.current = pageNumber;
-      this.getStories();
-    },
-
-    async getStories() {
-      let page = await axios.get(
-        `/auth/spaces/${this.$route.query.space_id}/stories?per_page=${this.pageSize}&page=${this.current}`
-      );
-
-      this.storiesWithData = [];
-
-      this.total = page.data.total;
-
-      await Promise.all(
-        page.data.stories.map((story) => {
-          return axios
-            .get(`/auth/spaces/${this.$route.query.space_id}/stories/${story.id}`)
-            .then((res) => {
-              if (!res.data.story.content.seo) {
-                res.data.story.content.seo = {
-                  title: "",
-                  description: "",
-                  plugin: "meta-fields",
-                };
-              }
-              this.storiesWithData.push(res.data.story);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-      );
-    },
+    setPage: async function (pageNumber) {
+      this.current = pageNumber
+      const {stories, total} = await getStories(this.$route.query.space_id, this.pageSize, this.current)
+      this.total = total
+      this.storiesWithData = stories
+    }
   },
 };
 </script>

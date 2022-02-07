@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { saveData } from '../lib/utils';
 
 export default {
   props: {
@@ -24,23 +25,8 @@ export default {
   },
 
   methods: {
-    async saveData(publish) {
-      let storyData = {
-        story: {
-          content: this.story.content,
-        },
-      };
-
-      if (publish) {
-        this.story.unpublished_changes = false;
-      } else {
-        this.story.unpublished_changes = true;
-      }
-
-      return axios.put(
-        `/auth/spaces/${this.$route.query.space_id}/stories/${this.story.id}`,
-        storyData
-      );
+    async saveStoryData(publish) {
+      return saveData(this.$route.query.space_id, this.story, publish)
     },
   },
 };
@@ -79,13 +65,13 @@ export default {
       <div class="flex justify-end mt-4">
         <button :disabled="!!story.unpublished_changes"
           class="mx-2 bg-gray-800 hover:bg-blue-900 text-gray-100 py-2 px-4 rounded"
-          @click="saveData()"
+          @click="saveStoryData()"
         >
           Save Draft
         </button>
         <button :disabled="!!story.published"
           class="mx-2 bg-gray-800 hover:bg-blue-900 text-gray-100 py-2 px-4 rounded"
-          @click="saveData(true)"
+          @click="saveStoryData(true)"
         >
           Publish
         </button>
