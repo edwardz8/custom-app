@@ -1,5 +1,4 @@
 <script>
-import axios from "axios";
 import { saveData } from "../lib/utils";
 
 export default {
@@ -10,10 +9,11 @@ export default {
     },
   },
   props: ["data"],
+
   data() {
     return {
       story: {},
-      changed: false
+      changed: false,
     };
   },
 
@@ -27,7 +27,11 @@ export default {
 
   methods: {
     async saveStoryData(publish) {
-      const save = await saveData(this.$route.query.space_id, this.story, publish);
+      const save = await saveData(
+        this.$route.query.space_id,
+        this.story,
+        publish
+      );
 
       if (save) {
         this.story = save;
@@ -42,27 +46,21 @@ export default {
 </script>
 
 <template>
-  <div class="container mx-auto">
-    <div v-if="changed" class="bg-gray-700 mt-2">
-      <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between flex-wrap">
-          <div class="w-0 flex-1 flex items-center">
-            <p class="ml-3 font-medium text-white truncate">
-              <span>Changes Saved</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="container mx-auto my-10">
     <div
       :key="story.id"
       v-if="story && story.content"
       class="py-4 px-6 bg-white shadow-md rounded my-2 mx-2"
     >
-      <div>{{ story.name }}</div>
+      <div class="flex justify-between">
+        <div class="block text-gray-800 text-md font-bold">Story name: "{{ story.name }}"</div>
+        <div class="rounded p-1 px-3 text-sm bg-gray-300">{{ story.published ? "Published story" : "Unpublished story" }}{{ story.unpublished_changes ? " with unpublished changes" : "" }}</div>
+      </div>
       <div>
-        <label class="block text-gray-800 text-sm font-bold mb-2 mt-2" for="title"
-          >Title</label
+        <label
+          class="block text-gray-800 text-sm font-bold mb-2 mt-5"
+          for="title"
+          >Meta Title</label
         >
         <input
           type="text"
@@ -72,10 +70,12 @@ export default {
         />
       </div>
       <div>
-        <label class="block text-gray-800 text-sm font-bold mb-2 mt-2" for="description"
-          >Description</label
+        <label
+          class="block text-gray-800 text-sm font-bold mb-2 mt-5"
+          for="description"
+          >Meta Description</label
         >
-        <input
+        <textarea
           type="text"
           v-model="story.content.seo.description"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -83,14 +83,15 @@ export default {
         />
       </div>
 
-      <div class="mt-2 text-green-400">
-        {{ story.published ? "Published and" : "Unpublished and"
-        }}<span>
-          {{ story.unpublished_changes ? "Draft available" : "No draft available" }}
-        </span>
+      <div v-if="changed" class="bg-green-700 mt-2">
+        <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+            <p class="ml-3 w-full font-medium text-white text-right">
+              Changes Saved
+            </p>
+        </div>
       </div>
 
-      <div class="flex justify-end mt-4">
+      <div v-if="!changed" class="flex justify-end mt-4">
         <button
           class="mx-2 bg-gray-800 hover:bg-blue-900 text-gray-100 py-2 px-4 rounded"
           @click="saveStoryData()"

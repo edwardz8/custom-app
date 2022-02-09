@@ -1,7 +1,5 @@
 <script>
-import axios from "axios";
-import StoryCard from "~/components/StoryCard.vue";
-import {getStories} from './../lib/utils'
+import { getStories } from "./../lib/utils";
 
 export default {
   data() {
@@ -31,11 +29,15 @@ export default {
 
   methods: {
     setPage: async function (pageNumber) {
-      this.current = pageNumber
-      const {stories, total} = await getStories(this.$route.query.space_id, this.pageSize, this.current)
-      this.total = total
-      this.storiesWithData = stories
-    }
+      this.current = pageNumber;
+      const { stories, total } = await getStories(
+        this.$route.query.space_id,
+        this.pageSize,
+        this.current
+      );
+      this.total = total;
+      this.storiesWithData = stories;
+    },
   },
 };
 </script>
@@ -43,15 +45,15 @@ export default {
 <template>
   <div class="container mx-auto">
     <div class="w-full flex justify-center py-4">
-      <nav class="inline-flex rounded shadow-sm" aria-label="pagination">
-        <a
+      <nav class="inline-flex rounded" aria-label="pagination">
+        <button
           v-for="pageNumber in totalPages"
           :key="pageNumber"
           @click="setPage(pageNumber)"
-          class="relative inline-flex items-center px-2 py-2 rounded border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+          class="rounded p-1 px-3 text-sm bg-gray-300 hover:bg-gray-400 mx-1"
         >
           <span>{{ pageNumber }}</span>
-        </a>
+        </button>
       </nav>
     </div>
     <div class="container">
