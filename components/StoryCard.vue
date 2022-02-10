@@ -2,13 +2,7 @@
 import { saveData } from "../lib/utils";
 
 export default {
-  props: {
-    blok: {
-      type: Object,
-      required: true,
-    },
-  },
-  props: ["data"],
+  props: ['data'],
 
   data() {
     return {
@@ -18,10 +12,6 @@ export default {
   },
 
   mounted() {
-    if (this.data)
-      if (!this.data.content.body) {
-        this.data.content.body = [];
-      }
     this.story = this.data;
   },
 
