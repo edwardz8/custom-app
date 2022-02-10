@@ -1,6 +1,7 @@
 {
   "name": "meta-custom-app",
   "version": "1.0.0",
+  "author": "Zach Edwards",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
